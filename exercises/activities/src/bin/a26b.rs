@@ -15,40 +15,37 @@
 // * After moving the functions into modules, try running
 //   `cargo check --bin a26b` to get a listing of required code changes
 
-// mod msg {
-//     pub fn trim(msg: &str) -> &str {
-//         msg.trim()
-//     }
+mod msg {
+    pub fn trim(msg: &str) -> &str {
+        msg.trim()
+    }
     
-//     pub fn capitalize(msg: &str) -> std::borrow::Cow<'_, str> {
-//         if let Some(letter) = msg.get(0..1) {
-//             format!("{}{}", letter.to_uppercase(), &msg[1..msg.len()]).into()
-//         } else {
-//             msg.into()
-//         }
-//     }
+    pub fn capitalize(msg: &str) -> std::borrow::Cow<'_, str> {
+        if let Some(letter) = msg.get(0..1) {
+            format!("{}{}", letter.to_uppercase(), &msg[1..msg.len()]).into()
+        } else {
+            msg.into()
+        }
+    }
     
-//     pub fn exciting(msg: &str) -> String {
-//         format!("{}!", msg)
-//     }
-// }
+    pub fn exciting(msg: &str) -> String {
+        format!("{}!", msg)
+    }
+}
 
 
-// mod math {
-//     pub fn add(lhs: isize, rhs: isize) -> isize {
-//         lhs + rhs
-//     }
-//     pub fn sub(lhs: isize, rhs: isize) -> isize {
-//         lhs - rhs
-//     }
-//     pub fn mul(lhs: isize, rhs: isize) -> isize {
-//         lhs * rhs
-//     }
-// }
+mod math {
+    pub fn add(lhs: isize, rhs: isize) -> isize {
+        lhs + rhs
+    }
+    pub fn sub(lhs: isize, rhs: isize) -> isize {
+        lhs - rhs
+    }
+    pub fn mul(lhs: isize, rhs: isize) -> isize {
+        lhs * rhs
+    }
+}
 
-extern crate activity;
-use activity::msg;
-use activity::math;
 fn main() {
     // Part 1: math functions
     let result = {

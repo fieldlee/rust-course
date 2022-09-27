@@ -9,4 +9,4 @@ name = "activity"
 path = "src/activitylib/mod.rs"
 
 [dependencies]
-
+thiserror = "1.0.33"

@@ -11,7 +11,11 @@
 
 use thiserror::Error;
 
-enum ProgramError {}
+enum ProgramError {
+    #[error("menu error")]
+    Menu(#[from] MenuError)
+
+}
 
 #[derive(Debug, Error)]
 enum MenuError {

@@ -54,4 +54,22 @@ enum Tile {
     Wood,
 }
 
-fn main() {}
+fn print_tile(tile:Tile){
+    match tile {
+        Tile::Brick(brick @ BrickStyle::Gray | brick @ BrickStyle::Red) =>{
+            println!("this color is :{:?}",brick);
+        },
+        Tile::Brick(other) => println!("other : {:?}",other),
+        Tile::Dirt | Tile::Grass | Tile::Sand => println!("Ground color"),
+        Tile::Treasure(TreasureChest{amount,..}) if amount >= 100 => println!("amoutn : {:?}",amount),
+        Tile::Water(presure) if presure.0 < 19 => println!("presure : {:?}",presure),
+        Tile::Water(presure) if presure.0 >= 19 => println!("presure high : {:?}",presure),
+        _ => ()
+    }
+}
+
+fn main() {
+    let tile = Tile::Water(Pressure(20));
+
+    print_tile(tile);
+}

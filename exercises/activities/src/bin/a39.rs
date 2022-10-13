@@ -28,6 +28,8 @@ enum LightMsg {
     // Add additional variants needed to complete the exercise
     ChangeColor(u8, u8, u8),
     Disconnect,
+    Off,
+    On,
 }
 
 enum LightStatus {
@@ -37,9 +39,56 @@ enum LightStatus {
 
 fn spawn_light_thread(receiver: Receiver<LightMsg>) -> JoinHandle<LightStatus> {
     // Add code here to spawn a thread to control the light bulb
+    let mut light_status = LightStatus::Off;
+    thread::spawn(move||{
+        loop{
+            if let Ok(msg) = receiver.recv() {
+                match msg {
+                    LightMsg::ChangeColor(r,g, b) => {
+                        println!("LightMsg::ChangeColor {} {} {} ",r,g,b);
+                        light_status =  LightStatus::On;
+                    },
+                    LightMsg::Disconnect => {
+                        println!("LightMsg::Disconnect ");
+                        light_status =  LightStatus::Off;
+                        break;
+                    },
+                    LightMsg::On => {
+                        println!("LightMsg::On ");
+                        light_status =  LightStatus::On;
+                    },
+                    LightMsg::Off => {
+                            println!("LightMsg::Off ");
+                            light_status =  LightStatus::Off;
+                            break;
+                    },
+                }
+            }else {
+                println!("disconnectd!!!");
+                light_status =  LightStatus::Off;
+                break;
+            }
+        }
+        light_status
+    })
 }
 
-fn main() {}
+fn main() {
+    let (s,r) = unbounded();
+    let light = spawn_light_thread(r);
+    let status1 =  s.send(LightMsg::ChangeColor(2,4,5));
+    let status2 = s.send(LightMsg::On);
+    let status3 = s.send(LightMsg::Off);
+    let status = light.join().expect("light error");
+    match status {
+        LightStatus::Off => {
+            println!("status:OFF");
+        },
+        LightStatus::On => {
+            println!("status:ON");
+        }
+    }
+}
 
 #[cfg(test)]
 mod test {
